@@ -41,30 +41,38 @@
         document.getElementById('questions-container').innerText = 'Failed to load questions.';
       });
 
-    function displayQuestions() {
-      const container = document.getElementById('questions-container');
-      container.innerHTML = '';
-      questions.forEach((q, i) => {
-        const qDiv = document.createElement('div');
-        qDiv.classList.add('p-4', 'border', 'rounded');
+  function displayQuestions() {
+    const container = document.getElementById('questions-container');
+    container.innerHTML = '';
+    questions.forEach((q, i) => {
+      const qDiv = document.createElement('div');
+      qDiv.classList.add('p-4', 'border', 'rounded');
 
-        let optionsHTML = '';
-        q.options.forEach(opt => {
-          optionsHTML += `
-            <label class="block mb-1 cursor-pointer">
-              <input type="radio" name="q${q.id}" value="${opt}" class="mr-2" required />
-              ${opt}
-            </label>
-          `;
-        });
+      const questionTitle = document.createElement('div');
+      questionTitle.classList.add('font-semibold', 'mb-2');
+      questionTitle.textContent = `Q${i + 1}: ${q.question}`;
+      qDiv.appendChild(questionTitle);
 
-        qDiv.innerHTML = `
-          <div class="font-semibold mb-2">Q${i+1}: ${q.question}</div>
-          <div>${optionsHTML}</div>
-        `;
-        container.appendChild(qDiv);
+      q.options.forEach(opt => {
+        const label = document.createElement('label');
+        label.classList.add('block', 'mb-1', 'cursor-pointer');
+
+        const input = document.createElement('input');
+        input.type = 'radio';
+        input.name = `q${q.id}`;
+        input.value = opt;
+        input.classList.add('mr-2');
+        input.required = true;
+
+        label.appendChild(input);
+        label.append(document.createTextNode(opt)); 
+        qDiv.appendChild(label);
       });
-    }
+
+      container.appendChild(qDiv);
+    });
+  }
+
 
     function startTimer() {
       const timerEl = document.getElementById('timer');
